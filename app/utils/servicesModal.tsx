@@ -80,7 +80,7 @@ export default function ServicesModal(props:any) {
                 <div className="relative p-6 flex-auto">
                 <ul className="w-70 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     {props.sercvices.map((service: any)=>(
-                        <li className="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600 inline-flex items-center">
+                        <li key={service} className="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600 inline-flex items-center">
                             {service.value}
                             <div key={service} className={`flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-pink-700 bg-pink-100 border border-pink-300 ${service.default === true ? 'text-pink-700 bg-pink-100 border border-pink-300': 'text-green-700 bg-green-100 border border-green-300'}`}>
                                 <div className="text-xs font-normal leading-none flex-initial">{service.default === true? 'default': 'custom'}</div>
