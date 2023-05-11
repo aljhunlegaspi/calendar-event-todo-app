@@ -22,6 +22,7 @@ const eventOptions = [
   ];
 
 const Option = (props: any) => {
+    console.log(props, 'pppppp')
   return (
     <div>
       <components.Option {...props}>
@@ -43,8 +44,9 @@ export default class SelectMultiple extends Component<any, any> {
     console.log(props, 'props SelectMultiple')
     this.servicesOptions = props.services;
     this.state = {
-      optionSelected: null,
+      optionSelected: props.selectedServices.length > 0 ? this.servicesOptions.filter((o: any)=> this.props.selectedServices.includes(o.value)):null,
     };
+    this.props.servicesSelected(this.state.optionSelected);
   }
 
   handleChange = (selected: any) => {

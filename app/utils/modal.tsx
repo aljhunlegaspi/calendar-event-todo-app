@@ -7,11 +7,14 @@ import SelectMultiple from './select'
 export default function Modal(props:any) {
   console.log(props, 'properties')
   const [services, setServices] = React.useState(props.sercvices)
+  const [toUpdateEvent, setToUpdateEvent] = React.useState(props.updateEventObject);
   const [event, setEvent] = React.useState({
-    name: "",
+    id: props.isUpdate === true ? props.updateEventObject.id :  Date.now(),
+    name: props.isUpdate === true ? props.updateEventObject.name : "",
     date: new Date(props.date),
     services: [],
     attachments: [],
+    index: props.isUpdate === true ? props.updateEventObject.index : null
   });
 
   function handleChange(e: any) {
@@ -24,15 +27,19 @@ export default function Modal(props:any) {
 
   function saveChanges(){
     setEvent({...event, date: props.date});
+    console.log(event, 'eeeeee')
     props.onModalCloseFunction(event);
+    props.setIsUpdate(false)
   }
 
   function servicesSelected(e: any){
-    let servicesSelected = e.map((service:any)=>{
-        return service.value;
-    })
-    event.services= servicesSelected;
-    console.log(e, 'ee data')
+    if(e){
+        let servicesSelected = e.map((service:any)=>{
+            return service.value;
+        })
+        event.services= servicesSelected;
+        console.log(e, 'ee data')
+    }
   }
 
   async function handleSubmit(e: any) {
@@ -69,7 +76,7 @@ export default function Modal(props:any) {
                             id="name" 
                             type="text" 
                             value={event.name}
-                            onChange={(e)=>setEvent({...event, name: e.target.value})}/>
+                            onChange={(e: any)=> setEvent({...event, name: e.target.value})}/>
                         </div>
                     </div>
                     <div className="md:flex md:items-center mb-6">
@@ -79,7 +86,7 @@ export default function Modal(props:any) {
                         </label>
                         </div>
                         <div className="md:w-2/3">
-                            <SelectMultiple services={services} servicesSelected={servicesSelected}/>
+                            <SelectMultiple services={services} servicesSelected={servicesSelected} selectedServices={props.isUpdate === true ? props.updateEventObject.services : []}/>
                         </div>
                     </div>
                 </form>
@@ -89,7 +96,7 @@ export default function Modal(props:any) {
                 <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => props.setShowModal(false)}
+                onClick={() => {props.setIsUpdate(false);props.setShowModal(false)}}
                 >
                 Close
                 </button>
@@ -98,7 +105,7 @@ export default function Modal(props:any) {
                 type="button"
                 onClick={saveChanges}
                 >
-                Save Changes
+                 {props.isUpdate === false ? 'Add Event' : 'Save Changes'}
                 </button>
             </div>
             </div>
